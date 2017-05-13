@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Linux/Unix思想 | NutShellKing Blog</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#00aeff" />
+    <meta name="msapplication-navbutton-color" content="#00aeff" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="#00aeff" />
+
+    <meta name="author" content="oneWayOut" />
+    <meta name="robots" content="index, follow"/>
+    <meta name="keywords" content="article, Linux, Unix" />
+    <meta name="description" content="去年年底请同学Leo帮忙装上Ubuntu系统，最近几个月几乎就没用过Windows系统。越来越喜欢Linux简洁的界面，飞快的速度了，唯一的缺陷是Office功能不是很强大，当然也可能是我没找到合适的软件。偶尔打开Windows，越来越难以忍受迅雷，360等软件了，都恨不得给你来半屏广告。这也是我在Github上建博客的原因，保持简洁的界面，只显示有用的信息。 因为对Linux系统的兴趣，最近看了三本经典好书：《黑客与画家》，《Linux/Unix设计思想》，《UNIX编程艺术》。这几本书都很有趣，有些章节读起来令人击节赞赏，带来恍然大悟的狂喜。 计算机、互联网的产生变革了我们这个时代，深刻的改变了人们的思维。正如蒸汽机、电气化曾带来的工业革命一样，这是一个巨大的范式转移（Paradigm shift）。《黑客与画家》的作者是美国互联网界举足轻重、有"创业教父"之称的哈佛大学计算机博士Paul Graham。正如译者序中所说：“这本书的内容并不深奥，不仅仅是写给程序员和创业者的，更是写给普通读者的。Paul Graham最大的目的，就是通过这本书，让普通读者理解我们所处的这个计算机时代。” 这本书最浓缩的介绍就在译者序了，我在此不可能介绍得更好。 后两本书主要是写给软件 …" />
+
+    <meta property="og:title" content="Linux/Unix思想"/>
+    <meta property="og:url" content="../../../articles/du-shu-bi-ji/Linux_Unix_Thinking/"/>
+    <meta property="og:site_name" content="NutShellKing Blog"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:image" content="../../.." />
+    <meta property="og:description" content="去年年底请同学Leo帮忙装上Ubuntu系统，最近几个月几乎就没用过Windows系统。越来越喜欢Linux简洁的界面，飞快的速度了，唯一的缺陷是Office功能不是很强大，当然也可能是我没找到合适的软件。偶尔打开Windows，越来越难以忍受迅雷，360等软件了，都恨不得给你来半屏广告。这也是我在Github上建博客的原因，保持简洁的界面，只显示有用的信息。 因为对Linux系统的兴趣，最近看了三本经典好书：《黑客与画家》，《Linux/Unix设计思想》，《UNIX编程艺术》。这几本书都很有趣，有些章节读起来令人击节赞赏，带来恍然大悟的狂喜。 计算机、互联网的产生变革了我们这个时代，深刻的改变了人们的思维。正如蒸汽机、电气化曾带来的工业革命一样，这是一个巨大的范式转移（Paradigm shift）。《黑客与画家》的作者是美国互联网界举足轻重、有"创业教父"之称的哈佛大学计算机博士Paul Graham。正如译者序中所说：“这本书的内容并不深奥，不仅仅是写给程序员和创业者的，更是写给普通读者的。Paul Graham最大的目的，就是通过这本书，让普通读者理解我们所处的这个计算机时代。” 这本书最浓缩的介绍就在译者序了，我在此不可能介绍得更好。 后两本书主要是写给软件 …" />
+
+    <link rel="canonical" href="../../../articles/du-shu-bi-ji/Linux_Unix_Thinking/" />
+
+    <link href="https://oneWayOut.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="NutShellKing Blog Atom">
+
+
+    <link rel="stylesheet" type="text/css" href="/theme/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/css/pygment.css" />
+    <!--link rel="stylesheet" type="text/css" href="/theme/css/social-likes_flat.css" /-->
+
+    <script type="text/javascript" src="/theme/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/theme/js/bootstrap.min.js"></script>
+    <!--script type="text/javascript" src="/theme/js/social-likes.min.js"></script-->
+
+
+    <link rel="stylesheet" type="text/css" href="../../../theme/css/tree.css" />
+    <link rel="stylesheet" type="text/css" href="../../../theme/css/anchorific.css" />
+    <script type="text/javascript" src="../../../theme/js/anchorific.js"></script>
+
+    <link rel="icon" type="image/png" href="/images/avatar.jpg">
+</head>
+<body id="index">
+    <a class="forkmegithub" href="https://github.com/oneWayOut">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="/theme/images/forkme_right_gray.png" alt="Fork me on GitHub">
+    </a>
+<div class="header">  
+    <div class="container">
+        <div class="logo">
+            <a href="../../../">
+                 <img alt="My Avatar" src="/images/avatar.jpg" width="128" height="128"/>
+            </a>
+        </div>
+
+        <div class="top-menu">
+
+            <!--div class="search">
+            </div-->
+             <!--p>test</p-->
+
+            <span class="menu"> </span>
+                <ul>
+                            <li ><a href="../../../about/">ABOUT</a></li>
+                            <li class="active"><a href="../../../category/du-shu-bi-ji.html">读书笔记</a></li>
+                            <li ><a href="../../../category/guan-dian-gan-xiang.html">观点感想</a></li>
+                            <li ><a href="../../../category/xue-xi-zong-jie.html">学习总结</a></li>
+
+                    <div class="clearfix"></div>
+                </ul>
+
+            <div class="clearfix"></div>
+
+            <script>
+                $("span.menu").click(function(){
+                    $(".top-menu ul").slideToggle("slow" , function(){
+                    });
+                });
+            </script>
+        </div>
+    </div>
+</div>
+    <div class="content">
+        <div class="container">
+                <div class="content-grids">
+<div class="single-main">
+
+    <div class="col-md-9 single-grid">
+
+        <header>
+<h4>
+    <a href="../../../articles/du-shu-bi-ji/Linux_Unix_Thinking/" title="Linux/Unix思想">Linux/Unix思想</a>
+    6月 19, 2016
+</h4>
+
+<div class="footer art-info">
+
+        Author: <a class="url fn" href="../../../author/onewayout/">oneWayOut</a> |
+
+    Category: <a href="../../../category/du-shu-bi-ji.html">读书笔记</a>
+
+
+
+    
+
+        <br />
+        Tags:         <a href="../../../tag/linux/">Linux</a>
+        <a href="../../../tag/unix/">Unix</a>
+
+</div>        </header>
+
+        <article class="content">
+
+
+            <p>去年年底请同学Leo帮忙装上Ubuntu系统，最近几个月几乎就没用过Windows系统。越来越喜欢Linux简洁的界面，飞快的速度了，唯一的缺陷是Office功能不是很强大，当然也可能是我没找到合适的软件。偶尔打开Windows，越来越难以忍受迅雷，360等软件了，都恨不得给你来半屏广告。这也是我在Github上建博客的原因，保持简洁的界面，只显示有用的信息。</p>
+<p>因为对Linux系统的兴趣，最近看了三本经典好书：《黑客与画家》，《Linux/Unix设计思想》，《UNIX编程艺术》。这几本书都很有趣，有些章节读起来令人击节赞赏，带来恍然大悟的狂喜。</p>
+<p>计算机、互联网的产生变革了我们这个时代，深刻的改变了人们的思维。正如蒸汽机、电气化曾带来的工业革命一样，这是一个巨大的<a href="https://zh.wikipedia.org/zh-cn/典范转移">范式转移（Paradigm shift）</a>。《黑客与画家》的作者是美国互联网界举足轻重、有"创业教父"之称的哈佛大学计算机博士Paul Graham。正如译者序中所说：“这本书的内容并不深奥，不仅仅是写给程序员和创业者的，更是写给普通读者的。Paul Graham最大的目的，就是通过这本书，让普通读者理解我们所处的这个计算机时代。”　这本书最浓缩的介绍就在<a href="http://www.ruanyifeng.com/blog/2011/04/on_hacker.html">译者序</a>了，我在此不可能介绍得更好。</p>
+<p>后两本书主要是写给软件、系统人员看的，Linux/Unix系统是当今计算机世界操作系统的中流砥柱，其思想影响了计算机相关的每一个行业，这两本书可以称得上是Linux/Unix界的思想总结。<a href="http://book.51cto.com/art/201204/327131.htm">《Linux/Unix设计思想》(在线试读)</a>将Linux/Unix中的设计哲学提炼出来, 较为通俗一些，适合在很短时间内泛读。<a href="http://book.51cto.com/art/201012/239361.htm">《UNIX编程艺术》(在线试读)</a>则更像一本Unix宗教的《坛经》，对于Unix的前世今生娓娓道来，关于其历史版权纠纷，各种设计决策间的争论比较，背后蕴含的设计思想的由来都阐述得非常清楚。对于各种设计原则的案例分析很有实践指导意义。这两本书有些重叠的地方，都提出了一些原则，将Linux/Unix的思想提升为一种哲学，或曰主义、宗教。《UNIX编程艺术》这本书干脆将老和尚教诲小和尚作为封面，书中还多次引用禅宗教义。</p>
+<div style="text-align:center">
+<img src="/images/Linux/TAOUP.png" width="400"  alt="TAOUP cover" />
+</div>
+
+<p>以下引自《Linux/Unix设计思想》：</p>
+<blockquote>
+<p>Unix哲学的几条准则看似简单。事实上，它们简单到会容易使人们忽略其重要性。这就是它们颇具欺骗性的地方。其实，简单的外表下掩盖着一个事实：如果人们能够始终如一地贯彻它们，这些准则可是非常行之有效的。    </p>
+<p>(1) 小即是美。相对于同类庞然大物，小巧的事物有着无可比拟的巨大优势。其中一点就是它们能够以独特有效的方式结合其他小事物，而且这种方式往往是最初的设计者没能预见到的。</p>
+<p>(2) 让每一个程序只做好一件事情。通过集中精力应对单一任务，程序可以减少很多冗余代码，从而避免过高的资源开销、不必要的复杂性和缺乏灵活性。</p>
+<p>(3) 尽快建立原型。大多数人都认同"建立原型"（prototyping）是任何项目的一个重要组成部分。在其他方法论中，建立原型只是设计阶段中一个不太重要的组成部分，然而，在Unix环境下它却是达成完美设计的主要工具。</p>
+<p>(4) 舍高效率而取可移植性。当Unix作为第一个可移植系统而开创先河时，它曾经掀起过轩然大波。今天，可移植性早被视作现代软&gt;件设计中一个理所当然的特性，这更加充分说明这条Unix准则早就在Unix之外的系统中获得了广泛认可。</p>
+<p>(5) 使用纯文本文件来存储数据。舍高效率而取可移植性强调了可移植代码的重要性。其实可移植性数据的重要性绝不亚于可移植代码。在关于可移植性的准则中，人们往往容易忽视可移植性数据。</p>
+<p>(6) 充分利用软件的杠杆效应。很多程序员对可重用代码模块的重要性只有一些肤浅的认识。代码重用能帮助人们充分利用软件的杠杆效应。一些Unix的开发人员正是遵循这个强大的理念，在相对较短的时间内编写出了大量应用程序。</p>
+<p>(7) 使用shell脚本来提高杠杆效应和可移植性。shell脚本在软件设计中可谓是一把双刃剑，它可以加强软件的可重用性和可移植性。无论什么时候，只要有可能，编写shell脚本来替代C语言程序都不失为一个良好的选择。</p>
+<p>(8) 避免强制性的用户界面。Unix开发人员非常了解，有一些命令用户界面为什么会被称为是"强制性的"（captive）用户界面。这些命令在运行的时候会阻止用户去运行其他命令，这样用户就会成为这些系统的囚徒。在图形用户界面中，这样的界面被称为"模态"（modal）。</p>
+<p>(9) 让每一个程序都成为过滤器。所有软件程序共有的最基本特性就是，它们只修改而从不创造数据。因此，基于软件的过滤器本质，人们就应该把它们编写成执行过滤器任务的程序。</p>
+</blockquote>
+<p><br>
+一句话总结Linux/Unix哲学： </p>
+<p><strong>KISS: Keep It Simiple, Stupid</strong></p>
+
+        </article>
+
+    </div>
+    <div class="col-md-3 content-right">
+        <div class='anchorific'></div>
+    </div>
+</div>
+                </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p>This blog is proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.</p>
+            <p>The theme of the blog is modified based on <a href="http://github.com/samael500/w3-personal-blog/">W3 Personal Blog</a>.</p>
+            <p>Copyrights &copy; 2015&mdash;2017 NutShellKing Blog All rights reserved.</p>
+            
+<p><a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+<img alt="Creative Commons License"
+    style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a>
+This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+Creative Commons Attribution 4.0 International License</a>.</p>
+        </div>
+    </div>
+
+
+</body>
+</html>

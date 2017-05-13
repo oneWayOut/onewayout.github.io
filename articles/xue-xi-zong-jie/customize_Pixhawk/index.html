@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>How to customize Pixhawk in your own project | NutShellKing Blog</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#00aeff" />
+    <meta name="msapplication-navbutton-color" content="#00aeff" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="#00aeff" />
+
+    <meta name="author" content="oneWayOut" />
+    <meta name="robots" content="index, follow"/>
+    <meta name="keywords" content="article, Pixhawk, UAV" />
+    <meta name="description" content="本文是在ISAE Supaero实习时，应老师要求所写。本来老师要求我对Pixhawk的理解写成文档或PPT, 因刚好在折腾博客，就放在这里了。" />
+
+    <meta property="og:title" content="How to customize Pixhawk in your own project"/>
+    <meta property="og:url" content="../../../articles/xue-xi-zong-jie/customize_Pixhawk/"/>
+    <meta property="og:site_name" content="NutShellKing Blog"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:image" content="../../.." />
+    <meta property="og:description" content="本文是在ISAE Supaero实习时，应老师要求所写。本来老师要求我对Pixhawk的理解写成文档或PPT, 因刚好在折腾博客，就放在这里了。" />
+
+    <link rel="canonical" href="../../../articles/xue-xi-zong-jie/customize_Pixhawk/" />
+
+    <link href="https://oneWayOut.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="NutShellKing Blog Atom">
+
+
+    <link rel="stylesheet" type="text/css" href="/theme/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/css/pygment.css" />
+    <!--link rel="stylesheet" type="text/css" href="/theme/css/social-likes_flat.css" /-->
+
+    <script type="text/javascript" src="/theme/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/theme/js/bootstrap.min.js"></script>
+    <!--script type="text/javascript" src="/theme/js/social-likes.min.js"></script-->
+
+
+    <link rel="stylesheet" type="text/css" href="../../../theme/css/tree.css" />
+    <link rel="stylesheet" type="text/css" href="../../../theme/css/anchorific.css" />
+    <script type="text/javascript" src="../../../theme/js/anchorific.js"></script>
+
+    <link rel="icon" type="image/png" href="/images/avatar.jpg">
+</head>
+<body id="index">
+    <a class="forkmegithub" href="https://github.com/oneWayOut">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="/theme/images/forkme_right_gray.png" alt="Fork me on GitHub">
+    </a>
+<div class="header">  
+    <div class="container">
+        <div class="logo">
+            <a href="../../../">
+                 <img alt="My Avatar" src="/images/avatar.jpg" width="128" height="128"/>
+            </a>
+        </div>
+
+        <div class="top-menu">
+
+            <!--div class="search">
+            </div-->
+             <!--p>test</p-->
+
+            <span class="menu"> </span>
+                <ul>
+                            <li ><a href="../../../about/">ABOUT</a></li>
+                            <li ><a href="../../../category/du-shu-bi-ji.html">读书笔记</a></li>
+                            <li ><a href="../../../category/guan-dian-gan-xiang.html">观点感想</a></li>
+                            <li class="active"><a href="../../../category/xue-xi-zong-jie.html">学习总结</a></li>
+
+                    <div class="clearfix"></div>
+                </ul>
+
+            <div class="clearfix"></div>
+
+            <script>
+                $("span.menu").click(function(){
+                    $(".top-menu ul").slideToggle("slow" , function(){
+                    });
+                });
+            </script>
+        </div>
+    </div>
+</div>
+    <div class="content">
+        <div class="container">
+                <div class="content-grids">
+<div class="single-main">
+
+    <div class="col-md-9 single-grid">
+
+        <header>
+<h4>
+    <a href="../../../articles/xue-xi-zong-jie/customize_Pixhawk/" title="How to customize Pixhawk in your own project">How to customize Pixhawk in your own project</a>
+    5月 24, 2016
+</h4>
+
+<div class="footer art-info">
+
+        Author: <a class="url fn" href="../../../author/onewayout/">oneWayOut</a> |
+
+    Category: <a href="../../../category/xue-xi-zong-jie.html">学习总结</a>
+
+
+
+    
+
+        <br />
+        Tags:         <a href="../../../tag/pixhawk/">Pixhawk</a>
+        <a href="../../../tag/uav/">UAV</a>
+
+</div>        </header>
+
+        <article class="content">
+
+
+            <p>Pixhawk is an open-source autopilot platform. In this article, I explained the basic architecture of Pixhawk source code. And how to customize it in your own project.</p>
+<ul>
+<li>
+<p><a href="#0">0. Prerequisite</a></p>
+</li>
+<li>
+<p><a href="#1">1. Understand Pixhawk source code</a></p>
+</li>
+<li>
+<p><a href="#1.1">1.1 Install the toolchain and build the code</a></p>
+</li>
+<li>
+<p><a href="#1.2">1.2 How are the source code directories organized</a></p>
+</li>
+<li>
+<p><a href="#1.3">1.3 The boot process</a></p>
+</li>
+<li>
+<p><a href="#1.4">1.4 The startup scripts</a></p>
+</li>
+<li>
+<p><a href="#1.5">1.5 The architecture</a></p>
+</li>
+<li>
+<p><a href="#2">2. How to costumize</a></p>
+</li>
+<li>
+<p><a href="#2.1">2.1 A small tutorial</a></p>
+</li>
+<li>
+<p><a href="#2.2">2.2 Add you own controller</a></p>
+</li>
+<li>
+<p><a href="#2.3">2.3 Change the mixer</a></p>
+</li>
+<li>
+<p><a href="#2.4">2.4 Change the makefile and the startup script</a></p>
+</li>
+<li>
+<p><a href="#3">3. Try this example</a></p>
+</li>
+<li>
+<p><a href="#3.1">3.1 How to Try it</a></p>
+</li>
+<li>
+<p><a href="#3.2">3.2 What I have changed</a></p>
+</li>
+</ul>
+<h2 id="0">0. Prerequisite</h2>
+
+<p>It's recommended to use <strong>Ubuntu 14.04 LTS</strong>, otherwise you may have strange issues.</p>
+<p>Please get familiar with GIT, it's a very powerfull software version control tool.　You can install the GUI tool <code>git cola</code> (In terminal: apt-get install git-cola) if you are not comfortable with the git commands in terminal.</p>
+<p>SublimeText 3 is a convenient editor to navigate the numerous source files. There is already <a href="https://github.com/PX4/Firmware/blob/master/Firmware.sublime-project">a project file</a> in the source folder that you can import to SublimeText. One feature that I used every day is that: Press "Ctrl + p" and type in the filename, and you can find the file you want instantly. </p>
+<h2 id="1">1. Understand Pixhawk source code</h2>
+
+<h3 id="1.1">1.1 Install the toolchain and build the code </h3>
+
+<p>First you have to install the toolchain by following the steps in <a href="http://dev.px4.io/starting-installing-linux.html">this webpage</a>. And then you can build the code and flash it to your PX4 board as <a href="http://dev.px4.io/starting-building.html">this page</a>.</p>
+<h3 id="1.2">1.2 How are the source code directories organised </h3>
+
+<p>After you have cloned the source code repository, you might be scared by so many directories and files. Actually you don't need to know all of them. I list the directory tree below(only the very import directories),　and explain what are in the folders.</p>
+<div class="highlight"><pre><span></span>Firmware 
+├── cmake  
+├── msg 
+│   └── templates 
+│       ├── px4 
+│       └── uorb 
+├── ROMFS 
+│   ├── px4fmu_common 
+│   │   ├── init.d 
+│   │   ├── logging 
+│   │   └── mixers 
+│   └── px4fmu_test 
+│       ├── init.d 
+│       ├── mixers 
+│       └── unit_test_data 
+└── src 
+    ├── drivers 
+    ├── examples 
+    ├── modules 
+    │   ├── attitude_estimator_ekf 
+    │   ├── attitude_estimator_q 
+    │   ├── bottle_drop 
+    │   ├── commander 
+    │   ├── controllib_test 
+    │   ├── dataman 
+    │   ├── ekf2 
+    │   ├── ekf2_replay 
+    │   ├── ekf_att_pos_estimator 
+    │   ├── fw_att_control 
+    │   ├── fw_pos_control_l1 
+    │   ├── gpio_led 
+    │   ├── land_detector 
+    │   ├── local_position_estimator 
+    │   ├── mavlink 
+    │   ├── mc_att_control 
+    │   ├── mc_att_control_multiplatform 
+    │   ├── mc_pos_control 
+    │   ├── mc_pos_control_multiplatform 
+    │   ├── muorb 
+    │   ├── navigator 
+    │   ├── param 
+    │   ├── position_estimator_inav 
+    │   ├── px4iofirmware 
+    │   ├── sdlog2 
+    │   ├── segway 
+    │   ├── sensors 
+    │   ├── simulator 
+    │   ├── systemlib 
+    │   ├── uavcan 
+    │   ├── unit_test 
+    │   ├── uORB 
+    │   └── vtol_att_control 
+    └── systemcmds 
+        ├── bl_update 
+        ├── config 
+        ├── dumpfile 
+        ├── esc_calib 
+        ├── i2c 
+        ├── mixer 
+        ├── motor_test 
+        ├── mtd 
+        ├── nshterm 
+        ├── param 
+        ├── perf 
+        ├── pwm 
+        ├── reboot 
+        ├── reflect 
+        ├── tests 
+        ├── top 
+        ├── topic_listener 
+        ├── usb_connected 
+        └── ver 
+</pre></div>
+
+
+<table>
+<thead>
+<tr>
+<th>Folder</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cmake</td>
+<td>make files</td>
+</tr>
+<tr>
+<td>msg</td>
+<td>uORB msg template, the uORB msg headers are generated from this folder</td>
+</tr>
+<tr>
+<td>ROMFS</td>
+<td>startup scripts and mixer files</td>
+</tr>
+<tr>
+<td>src</td>
+<td>drivers, examples, flight control tasks</td>
+</tr>
+<tr>
+<td>src/drivers</td>
+<td>all the drivers: gps, gyro, pwm...</td>
+</tr>
+<tr>
+<td>src/examples</td>
+<td>some simple examples help you understand the code</td>
+</tr>
+<tr>
+<td>src/modules</td>
+<td>estimators, controllers ....</td>
+</tr>
+<tr>
+<td>src/systemcmds</td>
+<td>some handy commands can be used in Nuttx shell</td>
+</tr>
+</tbody>
+</table>
+<p>As you can see, the source code files are well organised. Though you still need time to get familiar with them.</p>
+<h3 id="1.3">1.3 The boot process</h3>
+
+<p>If you power on your Pixhawk board through USB cable or BEC, the LED will flash and the buzzer will play a special tune(you can check the tune meaning <a href="http://ardupilot.org/copter/docs/common-sounds-pixhawkpx4.html">here</a>). But you may wander what exactly happen during this process. 
+<center><img src="/images/pixhawk/pixhawk_board.png" alt="pixhawk_board" width="219" height="337" /></center></p>
+<p>When powering on the board, the bootloader will run first. Bootloader is like BIOS in your PC. And it's already in the board when you buy it. So you may never need to bother it. The bootloader will launch the Nuttx Operating System. After some initialization of the hardware, memory... the Nuttx will execute a script file called <strong>"init.d/rcS"</strong> in function <code>nsh_initscript()</code> of file <code>nsh_script.c</code>. You can check the script file folder in <a href="#1.2">section 1.2</a>). This is a <strong>very important</strong> step. By executing this script file, some parameters in the EEPROM will be read, and the corresponding tasks related to these parameters will be launched. I will explain this in the next section.</p>
+<h3 id="1.4">1.4 The startup scripts</h3>
+
+<p>Nuttx is like a simplified Linux, moreover it's real time. So the script file is quite the same as Bash script in Linux. You can easily understand it if you know linux well.</p>
+<p>Let's read some lines in <code>ROMFS/px4fmu_common/init.d/rcS</code> first.</p>
+<div class="highlight"><pre><span></span>......
+<span class="c1">#</span>
+<span class="c1"># Try to mount the microSD card.</span>
+<span class="c1">#</span>
+<span class="c1"># REBOOTWORK this needs to start after the flight control loop</span>
+<span class="k">if</span> mount -t vfat /dev/mmcsd0 /fs/microsd
+<span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">&quot;[i] microSD mounted: /fs/microsd&quot;</span>
+    <span class="c1"># Start playing the startup tune</span>
+    tone_alarm start
+<span class="k">else</span>
+    tone_alarm MBAGP
+    <span class="k">if</span> mkfatfs /dev/mmcsd0
+    <span class="k">then</span>
+        <span class="k">if</span> mount -t vfat /dev/mmcsd0 /fs/microsd
+        <span class="k">then</span>
+            <span class="nb">echo</span> <span class="s2">&quot;[i] microSD card formatted&quot;</span>
+        <span class="k">else</span>
+            <span class="nb">echo</span> <span class="s2">&quot;[i] format failed&quot;</span>
+            tone_alarm MNBG
+            <span class="nb">set</span> LOG_FILE /dev/null
+        <span class="k">fi</span>
+    <span class="k">else</span>
+        <span class="nb">set</span> LOG_FILE /dev/null
+    <span class="k">fi</span>
+<span class="k">fi</span>
+......
+</pre></div>
+
+
+<p>At first it will start serial driver and set some parameters, which is not interested by us and not listed here. Then you will see <code>if mount -t vfat /dev/mmcsd0 /fs/microsd</code>. <code>mount</code> is a built-in command supported by Nuttx (Linux has the same command). It will try to mount the microSD card. If the return value is true, which means microSD card is mounted successfully,  the <code>echo</code> will print the result in shell window. And you should hear the buzzer alarm by <code>tone_alarm start</code>.</p>
+<p>There are many similar statements like <code>tone_alarm start</code>. If you understand this, you will almost know how the script file works and how to modify it to satisfy your own needs. Well, the grammar is simple: <code>command -arguments</code>, just like the commands in Linux Terminal. <code>tone_alrm</code> is a command compiled from file <code>tone_alarm.cpp</code> by some tricks in makefile. If you scrutinise the function <code>tone_alarm_main()</code> in this file, you will find this command has arguments <code>start</code> and <code>stop</code>.</p>
+<p>Let's read another piece of code in this file to see if you have any clue.</p>
+<div class="highlight"><pre><span></span>......
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$MODE</span> <span class="o">==</span> autostart <span class="o">]</span>
+<span class="k">then</span>
+    <span class="c1">#</span>
+    <span class="c1"># Start the ORB (first app to start)</span>
+    <span class="c1">#</span>
+    uorb start
+
+    <span class="c1">#</span>
+    <span class="c1"># Load parameters</span>
+    <span class="c1">#</span>
+    <span class="nb">set</span> PARAM_FILE /fs/microsd/params
+    <span class="k">if</span> mtd start
+    <span class="k">then</span>
+        <span class="nb">set</span> PARAM_FILE /fs/mtd_params
+    <span class="k">fi</span>
+
+    param <span class="k">select</span> <span class="nv">$PARAM_FILE</span>
+    <span class="k">if</span> param load
+    <span class="k">then</span>
+        <span class="nb">echo</span> <span class="s2">&quot;[param] Loaded: </span><span class="nv">$PARAM_FILE</span><span class="s2">&quot;</span>
+    <span class="k">else</span>
+        <span class="nb">echo</span> <span class="s2">&quot;[param] FAILED loading </span><span class="nv">$PARAM_FILE</span><span class="s2">&quot;</span>
+        <span class="k">if</span> param reset
+        <span class="k">then</span>
+        <span class="k">fi</span>
+    <span class="k">fi</span>
+......
+</pre></div>
+
+
+<p>You can find the commands <code>uorb, mtd, param</code> in files: <code>uORBMain.cpp, mtd.c, param.c</code>. You don't need to go deep inside these files right now, anyway we may use this method to scrutinise other files later (For instance: flight control files). This piece of code will just start uORB to provide communication service, and load parameter file <code>mtd_params</code> which contains airframe configuration, PID parameters, etc. </p>
+<p>I assume you have read through this file. So to summarize, the startup scripts are very important in the boot process. I list the things happened in this process to our concern:</p>
+<ul>
+<li>Read the parameter file</li>
+<li>Start the sensor drivers (script <code>rc.sensors</code>)</li>
+<li>Set and load the mixer corresponding to the airframe parameter <code>SYS_AUTOSTART</code>, set the pwm channel (script <code>rc.autostart</code>, this file is generated after you build the code) </li>
+<li>Start the flight tasks corresponding to the airframe parameter <code>SYS_AUTOSTART</code> (script <code>rc.fw_apps</code>, <code>rc.mc_apps</code>, etc.)</li>
+</ul>
+<h3 id="1.5">1.5 The architecture</h3>
+
+<p>All the flight control tasks run in Nuttx system. They communicate with each other through uORB. uORB is a implementation of publish-subscribe pattern.</p>
+<p><center><img src="/images/pixhawk/pixhawk_arch.png" alt="pixhawk_arch" /></center></p>
+<p><br>
+To control a vehicle, you need to navigate to waypoints, estimate the position and attitude, and control the position and attitude by using feedback control theory. That's the idea in pixhawk flight control architecture. 
+<center><img src="/images/pixhawk/pixhawk_feedbackcontrol.png" alt="pixhawk_arch" /></center>  </p>
+<p>These flight control modules are in folder <code>Firmware/src/modules</code>. I list the  modules used by different airframes below. Actually you can find where they are launched in the startup scripts.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th align="left">Fixed Wing</th>
+<th align="left">Multi Copter</th>
+<th align="left">VTOL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Navigator</td>
+<td align="left">navigator</td>
+<td align="left">navigator</td>
+<td align="left">navigator</td>
+</tr>
+<tr>
+<td>Estimator</td>
+<td align="left">ekf_att_pos_estimator</td>
+<td align="left">attitude_estimator_q <br> position_estimator_inav</td>
+<td align="left">attitude_estimator_q <br> position_estimator_inav</td>
+</tr>
+<tr>
+<td>Controller</td>
+<td align="left">fw_att_control <br> fw_pow_control_l1</td>
+<td align="left">mc_att_control <br> mc_pos_control</td>
+<td align="left">vtol_att_control <br> mc_att_control <br> mc_pos_control <br> fw_att_control <br> fw_pow_control_l1</td>
+</tr>
+</tbody>
+</table>
+<p><br>
+The architectural overview could be seen <a href="http://dev.px4.io/concept-architecture.html">here</a>. The tasks communicate by publishing and subscribing uORB messages. For instance, the messages related to the module <code>attitude_estimator_q</code> are as follows:</p>
+<ul>
+<li>Published messages:<ul>
+<li>vehicle_attitude</li>
+<li>control_state</li>
+</ul>
+</li>
+<li>Subscribed messages:<ul>
+<li>sensor_combined </li>
+<li>vision_position_estimate </li>
+<li>att_pos_mocap </li>
+<li>airspeed </li>
+<li>parameter_update </li>
+<li>vehicle_global_position</li>
+</ul>
+</li>
+</ul>
+<p>You can check the meaning of these messages in folder <code>Firmware/msg/templates</code>.</p>
+<h2 id="2">2. How to costumize</h2>
+
+<h3 id="2.1"> 2.1 A small tutorial </h3>
+
+<p>We can do a small exercise to understand the code better, and then go even further. Please follow <a href="http://dev.px4.io/tutorial-hello-sky.html#step-2-minimal-application">this tutorial</a>. The FTDI 3.3v cable is <strong>a necessary hardware</strong> for developpers to interact with Nuttx through <strong>Nuttx Shell(NSH)</strong>. </p>
+<h3 id="2.2"> 2.2 Add you own controller </h3>
+
+<p>Following the same concept, you can add a simple control law in <a href="https://github.com/PX4/Firmware/tree/master/src/examples/fixedwing_control"><code>Firmware/src/examples/fixedwing_control/main.c</code></a>. The program subscribes the estimated position and attitude, manual control input. The only thing you need to do is to implement the PID control law, and calculate the <strong>normalized control value</strong>. Then publish it in the <code>actuator_controls_0</code> message to mixer to control the servos or motors.</p>
+<h3 id="2.3"> 2.3 Change the mixer </h3>
+
+<p>The key concept of the mixer is to translate the normalized control output from the controller to pwm to actuators, Which greatly improves reusability of code. If you have a special airframe, you may need to have you own mixer to control the acuators. Please refer to <a href="http://dev.px4.io/concept-mixing.html">this webpage</a> and the source file folder <code>Firmware/ROMFS/mixers</code>.</p>
+<h3 id="2.4"> 2.4 Change the makefile and the startup script</h3>
+
+<p>You can add you own program in <code>Firmware/cmake/configs/nuttx_px4fmu-v2_default.cmake</code> as you did before in <a href="#2.1">section 2.1</a>, so as to compile it. But you still need to launch it in Nuttx shell. An alternative and simple way is to start it in startup script like below (Take fixed wing airframe for instance):</p>
+<div class="highlight"><pre><span></span>......
+<span class="c1">#</span>
+<span class="c1"># Start attitude controller</span>
+<span class="c1">#</span>
+<span class="c1"># fw_att_control start</span>
+<span class="c1"># fw_pos_control_l1 start</span>
+
+ex_fixedwing_control start
+......
+</pre></div>
+
+
+<p>This piece of code is from <code>rc.fw_apps</code>. As you can see, two lines are commented, one line is inserted. So your own controller <code>ex_fixedwing_control</code> from <a href="#2.2">section 2.2</a> is started instead of the original one: <code>fw_att_control</code> and <code>fw_pos_control_l1</code>.</p>
+<h2 id="3">3. Try this example </h2>
+
+<p>I have modified some Pixhawk code for my internship project. So you can try my code and use the same method to customize pixhawk in your own project too.</p>
+<p>In my example, the <code>MAIN OUT</code> channel 1 and 2 can be controlled by the roll angle. And the <code>MAIN OUT</code> channel 3, 4, 5 and 6 are controlled by vertical speed.</p>
+<h3 id="3.1">3.1 How to Try it</h3>
+
+<p>In terminal, go to the folder where you want to store the source code, type in the following commands:</p>
+<div class="highlight"><pre><span></span><span class="c1"># clone the repository</span>
+git clone https://github.com/oneWayOut/Firmware.git
+<span class="nb">cd</span> Firmware
+git checkout caidev
+git submodule update --init --recursive
+
+<span class="c1"># please connect pixhawk to your computer through USB cable</span>
+make px4fmu-v2_default upload
+</pre></div>
+
+
+<p>After you have execute the commands above, connect the servo and motor to the <code>MAIN OUT</code> channels. Connect a FTDI 3.3v cable to pixhawk as explained <a href="http://dev.px4.io/advanced-system-console.html#connecting-via-ftdi-33v-cable">here</a>. I assume you have installed <code>screen</code>. So you can connect to Nuttx shell by the command below(change <code>/dev/ttyXXX</code> to your own device name, something like <code>/dev/ttyUSB0</code>).</p>
+<div class="highlight"><pre><span></span>screen /dev/ttyXXX <span class="m">57600</span> 8N1
+</pre></div>
+
+
+<p>And start my customized task in Nuttx shell:</p>
+<div class="highlight"><pre><span></span>nsh&gt; ex_visionair_control start
+</pre></div>
+
+
+<p>Press the safety button to arm the board, now you can observe how the servo and motor react when you change the roll angle and the vertical speed of Pixhawk board. </p>
+<h3 id="3.2">3.2 What I have changed </h3>
+
+<p>As I said before, I changed the startup scripts, makefile. And I renamed the folder <code>fixedwing_control</code> to <code>visionair_control</code>. In the file <code>main.c</code> from this folder, I connect the sensor value  directly to pwm channel, but not using mixer.  You can see what I have changed <a href="https://github.com/PX4/Firmware/compare/master...oneWayOut:caidev">here</a>.</p>
+
+        </article>
+
+    </div>
+    <div class="col-md-3 content-right">
+        <div class='anchorific'></div>
+    </div>
+</div>
+                </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p>This blog is proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.</p>
+            <p>The theme of the blog is modified based on <a href="http://github.com/samael500/w3-personal-blog/">W3 Personal Blog</a>.</p>
+            <p>Copyrights &copy; 2015&mdash;2017 NutShellKing Blog All rights reserved.</p>
+            
+<p><a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+<img alt="Creative Commons License"
+    style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a>
+This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+Creative Commons Attribution 4.0 International License</a>.</p>
+        </div>
+    </div>
+
+
+</body>
+</html>

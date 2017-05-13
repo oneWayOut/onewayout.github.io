@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>博客迁移笔记 | NutShellKing Blog</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#00aeff" />
+    <meta name="msapplication-navbutton-color" content="#00aeff" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="#00aeff" />
+
+    <meta name="author" content="oneWayOut" />
+    <meta name="robots" content="index, follow"/>
+    <meta name="keywords" content="article, 博客, pelican, flask, markdown" />
+    <meta name="description" content="记录了博客从Jekyll迁移至Pelican的过程中解决的几个问题" />
+
+    <meta property="og:title" content="博客迁移笔记"/>
+    <meta property="og:url" content="../../../articles/xue-xi-zong-jie/move_blog/"/>
+    <meta property="og:site_name" content="NutShellKing Blog"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:image" content="../../..images/blog_move/Matrixreloaded-logo.png" />
+    <meta property="og:description" content="记录了博客从Jekyll迁移至Pelican的过程中解决的几个问题" />
+
+    <link rel="canonical" href="../../../articles/xue-xi-zong-jie/move_blog/" />
+
+    <link href="https://oneWayOut.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="NutShellKing Blog Atom">
+
+
+    <link rel="stylesheet" type="text/css" href="/theme/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/css/pygment.css" />
+    <!--link rel="stylesheet" type="text/css" href="/theme/css/social-likes_flat.css" /-->
+
+    <script type="text/javascript" src="/theme/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/theme/js/bootstrap.min.js"></script>
+    <!--script type="text/javascript" src="/theme/js/social-likes.min.js"></script-->
+
+
+    <link rel="stylesheet" type="text/css" href="../../../theme/css/tree.css" />
+    <link rel="stylesheet" type="text/css" href="../../../theme/css/anchorific.css" />
+    <script type="text/javascript" src="../../../theme/js/anchorific.js"></script>
+
+    <link rel="icon" type="image/png" href="/images/avatar.jpg">
+</head>
+<body id="index">
+    <a class="forkmegithub" href="https://github.com/oneWayOut">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="/theme/images/forkme_right_gray.png" alt="Fork me on GitHub">
+    </a>
+<div class="header">  
+    <div class="container">
+        <div class="logo">
+            <a href="../../../">
+                 <img alt="My Avatar" src="/images/avatar.jpg" width="128" height="128"/>
+            </a>
+        </div>
+
+        <div class="top-menu">
+
+            <!--div class="search">
+            </div-->
+             <!--p>test</p-->
+
+            <span class="menu"> </span>
+                <ul>
+                            <li ><a href="../../../about/">ABOUT</a></li>
+                            <li ><a href="../../../category/du-shu-bi-ji.html">读书笔记</a></li>
+                            <li ><a href="../../../category/guan-dian-gan-xiang.html">观点感想</a></li>
+                            <li class="active"><a href="../../../category/xue-xi-zong-jie.html">学习总结</a></li>
+
+                    <div class="clearfix"></div>
+                </ul>
+
+            <div class="clearfix"></div>
+
+            <script>
+                $("span.menu").click(function(){
+                    $(".top-menu ul").slideToggle("slow" , function(){
+                    });
+                });
+            </script>
+        </div>
+    </div>
+</div>
+    <div class="content">
+        <div class="container">
+                <div class="content-grids">
+<div class="single-main">
+
+    <div class="col-md-9 single-grid">
+
+        <header>
+<h4>
+    <a href="../../../articles/xue-xi-zong-jie/move_blog/" title="博客迁移笔记">博客迁移笔记</a>
+    5月 07, 2017
+</h4>
+
+<div class="footer art-info">
+
+        Author: <a class="url fn" href="../../../author/onewayout/">oneWayOut</a> |
+
+    Category: <a href="../../../category/xue-xi-zong-jie.html">学习总结</a>
+
+
+
+    
+
+        <br />
+        Tags:         <a href="../../../tag/bo-ke/">博客</a>
+        <a href="../../../tag/pelican/">pelican</a>
+        <a href="../../../tag/flask/">flask</a>
+        <a href="../../../tag/markdown/">markdown</a>
+
+</div>        </header>
+
+        <article class="content">
+
+
+            <p>去年花了一些时间在github上建起了<a href="http://onewayout.github.io">个人博客</a>，后来又购买了<a href="http://nutshellking.com">域名nutshellking.com</a>(取自哈姆雷特台词I could be bounded in a <strong>nutshell</strong>, and count myself a <strong>king</strong> of infinite space), 该博客采用Jekyll生成，基本满足了我想要的如下功能：</p>
+<ul>
+<li>代码高亮；</li>
+<li>支持数学公式显示(通过Mathjax实现)；</li>
+<li>支持评论（通过Disqus实现，后来发现此项功能被GFW屏蔽了）；</li>
+</ul>
+<p>自那以后，一直瞎忙，没时间打理博客，近来兴起，想将个人博客网站更新重整。此博客原来使用的Jekyll是一个Ruby语言写成的静态网页生成器, 因觉得Ruby用途较为单一，最近在学应用广泛的Python的缘故，觉得将博客迁移至基于Python技术的Web框架应该会比较有趣。比较成熟的Python Web框架要数Flask与Django了。对于一个简洁的博客，Django可能太过重量级，Flask就够用了，因此买了本《Flask Web开发　基于Python的Web应用开发实战》（人称Flask狗书），在电脑上演练一番。在此过程中填了不少坑，浪费了不少时间，最终转到与Jekyll十分类似的Pelican上面。将此段时间的折腾记录如下。</p>
+<p>Flask狗书循序渐进的讲述了Flask开发的各个步骤，结合其提供的<a href="https://github.com/miguelgrinberg/flasky">git代码库</a>能够按章节一步步实现、理解所需功能，实为良心之作。该书作者作为Flask的核心开发者，其个人网站上也有一个讲解<a href="https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world">Flask的教程</a>很不错。但Flask仅仅只是一个框架，要将其变为可部署的个人博客产品显然需要定制各种插件，加入个性化配置，有很多工作要做。这也是我最初始料未及的。
+<h2 id="1">1. Flask　Web开发实战书中的几个问题</h2>
+<h3 id="1.1">1.1 注册时无法通过email收到激活邮件</h3>
+第8章中用户注册功能需要用向注册的用户发送激活邮件，此步骤要求必须实现配置好邮件发送相关设置，代码中默认的设置使用google的邮件服务，不更改此处显然无法成功。
+该设置在Config.py中，以第9章的程序为例, 首先签出对应版本:</p>
+<div class="highlight"><pre><span></span>git clone https://github.com/miguelgrinberg/flasky.git
+<span class="nb">cd</span> flasky
+git checkout 9a
+</pre></div>
+
+
+<p>注意Config.py中以下代码:</p>
+<div class="highlight"><pre><span></span>    <span class="n">MAIL_SERVER</span> <span class="o">=</span> <span class="s1">&#39;smtp.googlemail.com&#39;</span>
+    <span class="n">MAIL_PORT</span> <span class="o">=</span> <span class="mi">587</span>
+    <span class="n">MAIL_USE_TLS</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">MAIL_USERNAME</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;MAIL_USERNAME&#39;</span><span class="p">)</span>
+    <span class="n">MAIL_PASSWORD</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;MAIL_PASSWORD&#39;</span><span class="p">)</span>
+    <span class="n">FLASKY_MAIL_SUBJECT_PREFIX</span> <span class="o">=</span> <span class="s1">&#39;[Flasky]&#39;</span>
+    <span class="n">FLASKY_MAIL_SENDER</span> <span class="o">=</span> <span class="s1">&#39;Flasky Admin &lt;flasky@example.com&gt;&#39;</span>
+    <span class="n">FLASKY_ADMIN</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;FLASKY_ADMIN&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>若使用163邮箱，可更改其MAIL_SERVER及MAIL_PORT如下（其他邮箱可参考email服务商官网帮助）:</p>
+<div class="highlight"><pre><span></span>    <span class="n">MAIL_SERVER</span> <span class="o">=</span> <span class="s1">&#39;smtp.163.com&#39;</span>
+    <span class="n">MAIL_PORT</span> <span class="o">=</span> <span class="mi">25</span>
+</pre></div>
+
+
+<p>并将flasky@example.com替换为自己所用邮箱。注意到以上代码中使用了这几个环境变量: MAIL_USERNAME，MAIL_PASSWORD，FLASKY_ADMIN，在linux环境下，需在终端中对其进行设置：</p>
+<div class="highlight"><pre><span></span><span class="o">(</span>venv<span class="o">)</span> $ <span class="nb">export</span> <span class="nv">MAIL_USERNAME</span><span class="o">=</span>&lt;mail username&gt;
+<span class="o">(</span>venv<span class="o">)</span> $ <span class="nb">export</span> <span class="nv">MAIL_PASSWORD</span><span class="o">=</span>&lt;mail password&gt;
+<span class="o">(</span>venv<span class="o">)</span> $ <span class="nb">export</span> <span class="nv">FLASKY_ADMIN</span><span class="o">=</span>&lt;mail username&gt;
+</pre></div>
+
+
+<p>若为Windows环境，将export改为set。
+注意在终端中输入的邮箱用户名不需要再加上@xxx.com后缀。</p>
+<h3 id="1.2">1.2 无法发表文章</h3>
+
+<p>第11章时会出现使用管理员账户登录后无法发表文章的问题，此问题的原因是数据库中角色权限不对。可参考<a href="https://www.zhihu.com/question/42493758">此处解决方案</a>。</p>
+<h3 id="1.3">1.3 markdown生成的网页文件显示不正常</h3>
+
+<p>按照该书提供源码，使用markdown编写文件，插入如下表格格式的文本，预览时发现无法显示表格。</p>
+<div class="highlight"><pre><span></span>Item     | Value
+-------- | ---
+Computer | $1600
+Phone    | $12
+</pre></div>
+
+
+<p>这是由于python的markdown模块将文本转换为网页文件时，未指定使用相应扩展所致。</p>
+<div class="highlight"><pre><span></span>git checkout 11h
+</pre></div>
+
+
+<p>按以上指令检出文件，找到app/models.py中的on_changed_body函数</p>
+<div class="highlight"><pre><span></span>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">on_changed_body</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">oldvalue</span><span class="p">,</span> <span class="n">initiator</span><span class="p">):</span>
+        <span class="n">allowed_tags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;abbr&#39;</span><span class="p">,</span> <span class="s1">&#39;acronym&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;blockquote&#39;</span><span class="p">,</span> <span class="s1">&#39;code&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;em&#39;</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="s1">&#39;li&#39;</span><span class="p">,</span> <span class="s1">&#39;ol&#39;</span><span class="p">,</span> <span class="s1">&#39;pre&#39;</span><span class="p">,</span> <span class="s1">&#39;strong&#39;</span><span class="p">,</span> <span class="s1">&#39;ul&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;h1&#39;</span><span class="p">,</span> <span class="s1">&#39;h2&#39;</span><span class="p">,</span> <span class="s1">&#39;h3&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">]</span>
+        <span class="n">target</span><span class="o">.</span><span class="n">body_html</span> <span class="o">=</span> <span class="n">bleach</span><span class="o">.</span><span class="n">linkify</span><span class="p">(</span><span class="n">bleach</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span>
+            <span class="n">markdown</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="s1">&#39;html&#39;</span><span class="p">),</span>
+            <span class="n">tags</span><span class="o">=</span><span class="n">allowed_tags</span><span class="p">,</span> <span class="n">strip</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+</pre></div>
+
+
+<p>将此段代码改为如下即可:</p>
+<div class="highlight"><pre><span></span>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">on_changed_body</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">oldvalue</span><span class="p">,</span> <span class="n">initiator</span><span class="p">):</span>
+        <span class="n">myexts</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;extra&#39;</span><span class="p">,</span> <span class="s1">&#39;abbr&#39;</span><span class="p">,</span> <span class="s1">&#39;attr_list&#39;</span><span class="p">,</span> <span class="s1">&#39;def_list&#39;</span><span class="p">,</span> <span class="s1">&#39;fenced_code&#39;</span><span class="p">,</span> <span class="s1">&#39;footnotes&#39;</span><span class="p">,</span> <span class="s1">&#39;tables&#39;</span><span class="p">,</span> <span class="s1">&#39;smart_strong&#39;</span><span class="p">,</span> <span class="s1">&#39;admonition&#39;</span><span class="p">,</span> <span class="s1">&#39;codehilite&#39;</span><span class="p">,</span> <span class="s1">&#39;headerid&#39;</span><span class="p">,</span> <span class="s1">&#39;meta&#39;</span><span class="p">,</span> <span class="s1">&#39;nl2br&#39;</span><span class="p">,</span> <span class="s1">&#39;sane_lists&#39;</span><span class="p">,</span> <span class="s1">&#39;smarty&#39;</span><span class="p">,</span> <span class="s1">&#39;toc&#39;</span><span class="p">]</span>
+        <span class="n">target</span><span class="o">.</span><span class="n">body_html</span> <span class="o">=</span> <span class="n">bleach</span><span class="o">.</span><span class="n">linkify</span><span class="p">(</span><span class="n">markdown</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">extensions</span><span class="o">=</span><span class="n">myexts</span><span class="p">))</span>
+</pre></div>
+
+
+<p>markdown模块的各个扩展的用法可参考<a href="http://pythonhosted.org/Markdown/extensions/">此处官网</a>。</p>
+<h2 id="2">2 Pelican中markdown文件插入数学公式无法正确显示</h2>
+
+<p>Pelican的使用还是相当方便的，但其依赖的Python　Markdown模块转换markdown文件的能力没有Jekyll成熟稳定。借助Mathjax脚本在markdown文件中插入Latex数学公式时，若公式中含有下划线_:</p>
+<div class="highlight"><pre><span></span>$$\vec{X} = (\vec{x_j}, \vec{x_k})$$
+</pre></div>
+
+
+<p>则下划线在转换后会生成<code>&lt;em&gt;</code>标签，导致无法正确渲染公式。　
+解决此问题需要在调用markdown解析转换文件时，碰到$$等符号换种规则解析即可。网上已有<a href="https://github.com/mayoff/python-markdown-mathjax">解决方案</a>，就无须重造轮子了。按照该方案将mathjax.py拷贝至markdown模块中的extensions子文件夹中，然后在pelicanconf.py中添加以下代码即可:</p>
+<div class="highlight"><pre><span></span><span class="n">MARKDOWN</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;extension_configs&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;markdown.extensions.codehilite&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;css_class&#39;</span><span class="p">:</span> <span class="s1">&#39;highlight&#39;</span><span class="p">},</span>
+        <span class="s1">&#39;markdown.extensions.extra&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;markdown.extensions.meta&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;markdown.extensions.mathjax&#39;</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;output_format&#39;</span><span class="p">:</span> <span class="s1">&#39;html5&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>填了这么多坑，费了很多时间终于讲博客迁移成功。希望能够继续坚持探索、记录、分享自己的各种想法。</p>
+
+        </article>
+
+    </div>
+    <div class="col-md-3 content-right">
+        <div class='anchorific'></div>
+    </div>
+</div>
+                </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p>This blog is proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.</p>
+            <p>The theme of the blog is modified based on <a href="http://github.com/samael500/w3-personal-blog/">W3 Personal Blog</a>.</p>
+            <p>Copyrights &copy; 2015&mdash;2017 NutShellKing Blog All rights reserved.</p>
+            
+<p><a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+<img alt="Creative Commons License"
+    style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a>
+This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+Creative Commons Attribution 4.0 International License</a>.</p>
+        </div>
+    </div>
+
+
+</body>
+</html>
