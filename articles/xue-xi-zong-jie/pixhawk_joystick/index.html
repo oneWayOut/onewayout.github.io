@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Pixhawk连接摇杆进行仿真 | NutShellKing Blog</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#00aeff" />
+    <meta name="msapplication-navbutton-color" content="#00aeff" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="#00aeff" />
+
+    <meta name="author" content="oneWayOut" />
+    <meta name="robots" content="index, follow"/>
+    <meta name="keywords" content="article, Pixhawk, Joystick, Simulation, 摇杆， 仿真" />
+    <meta name="description" content="对Pixhawk代码中的仿真接口模块进行了更改，使其能够直接通过USB接口读取控制摇杆的输入，实现对其飞控代码的仿真飞行控制" />
+
+    <meta property="og:title" content="Pixhawk连接摇杆进行仿真"/>
+    <meta property="og:url" content="../../../articles/xue-xi-zong-jie/pixhawk_joystick/"/>
+    <meta property="og:site_name" content="NutShellKing Blog"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:image" content="../../.." />
+    <meta property="og:description" content="对Pixhawk代码中的仿真接口模块进行了更改，使其能够直接通过USB接口读取控制摇杆的输入，实现对其飞控代码的仿真飞行控制" />
+
+    <link rel="canonical" href="../../../articles/xue-xi-zong-jie/pixhawk_joystick/" />
+
+    <link href="https://oneWayOut.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="NutShellKing Blog Atom">
+
+
+    <link rel="stylesheet" type="text/css" href="/theme/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/css/font-awesome.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/css/pygment.css" />
+    <!--link rel="stylesheet" type="text/css" href="/theme/css/social-likes_flat.css" /-->
+
+    <script type="text/javascript" src="/theme/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/theme/js/bootstrap.min.js"></script>
+    <!--script type="text/javascript" src="/theme/js/social-likes.min.js"></script-->
+
+
+    <link rel="stylesheet" type="text/css" href="../../../theme/css/tree.css" />
+    <link rel="stylesheet" type="text/css" href="../../../theme/css/anchorific.css" />
+    <script type="text/javascript" src="../../../theme/js/anchorific.js"></script>
+
+    <link rel="icon" type="image/png" href="/images/avatar.jpg">
+</head>
+<body id="index">
+    <a class="forkmegithub" href="https://github.com/oneWayOut">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="/theme/images/forkme_right_gray.png" alt="Fork me on GitHub">
+    </a>
+<div class="header">  
+    <div class="container">
+        <div class="logo">
+            <a href="../../../">
+                 <img alt="My Avatar" src="/images/avatar.jpg" width="128" height="128"/>
+            </a>
+        </div>
+
+        <div class="top-menu">
+
+            <!--div class="search">
+            </div-->
+             <!--p>test</p-->
+
+            <span class="menu"> </span>
+                <ul>
+                            <li ><a href="../../../about/">ABOUT</a></li>
+                            <li ><a href="../../../category/du-shu-bi-ji.html">读书笔记</a></li>
+                            <li ><a href="../../../category/guan-dian-gan-xiang.html">观点感想</a></li>
+                            <li class="active"><a href="../../../category/xue-xi-zong-jie.html">学习总结</a></li>
+
+                    <div class="clearfix"></div>
+                </ul>
+
+            <div class="clearfix"></div>
+
+            <script>
+                $("span.menu").click(function(){
+                    $(".top-menu ul").slideToggle("slow" , function(){
+                    });
+                });
+            </script>
+        </div>
+    </div>
+</div>
+    <div class="content">
+        <div class="container">
+                <div class="content-grids">
+<div class="single-main">
+
+    <div class="col-md-9 single-grid">
+
+        <header>
+<h4>
+    <a href="../../../articles/xue-xi-zong-jie/pixhawk_joystick/" title="Pixhawk连接摇杆进行仿真">Pixhawk连接摇杆进行仿真</a>
+    12月 02, 2017
+</h4>
+
+<div class="footer art-info">
+
+        Author: <a class="url fn" href="../../../author/onewayout/">oneWayOut</a> |
+
+    Category: <a href="../../../category/xue-xi-zong-jie.html">学习总结</a>
+
+
+
+    
+
+        <br />
+        Tags:         <a href="../../../tag/pixhawk/">Pixhawk</a>
+        <a href="../../../tag/joystick/">Joystick</a>
+        <a href="../../../tag/simulation/">Simulation</a>
+        <a href="../../../tag/yao-gan-fang-zhen/">摇杆， 仿真</a>
+
+</div>        </header>
+
+        <article class="content">
+
+
+            <h3 id="1">1. 问题</h3>
+
+<p>最近有这样一个需求: 对Pixhawk软件中的控制算法进行更改后，需要对其控制算法、各模式间的切换等进行全面地仿真测试，避免实际飞行时炸机的损失。
+按照<a href="https://dev.px4.io/en/simulation/">官方文档中的方法</a>， 可利用Gazebo, QGroundControl等配合完成大部分的大部分的测试，还可连接控制摇杆/手柄(Joystick/Gamepad), 将其作为手动输入。同事付老师帮忙给了一个Made in China的Saitek Cyborg evo摇杆，按照官网方法进行配置，发现在仿真中无法通过其设置手动、增稳、自动等飞行模式，一查，原来仅有<a href="https://docs.qgroundcontrol.com/en/SetupView/Joystick.html#sony-playstation-34-controllers">高端的Sony的摇杆才能支持模式切换</a>。 只好想办法省钱，通过更改软件解决无法通过摇杆切换模式的问题。</p>
+<p><center><img src="/images/px4_joystick/Joystick.jpg"　height="400"/></center> </p>
+<h3 id="2">2. 问题分析</h3>
+
+<p>PX4原有的仿真环境交联关系如下图：
+<center><img src="/images/px4_joystick/SITL1.png"　height="448"/></center> 
+从图中可以看出摇杆的输入通过QGroundControl地面站读取后，转发给控制软件。若能通过控制软件直接读取摇杆输入，如下图：
+<center><img src="/images/px4_joystick/SITL2.png" height="448"/></center> </p>
+<p>在控制软件中读取摇杆输入后，对其解析，将按键消息打包为软件能识别的模式切换指令消息，并按照PX4软件中的消息发布订阅机制将其发送至负责模式切换的模块，即能解决前述问题。因此须分以下两步达到目标:</p>
+<ol>
+<li>读取摇杆输入，正确解析其消息；</li>
+<li>将摇杆消息打包为软件可识别的Topic, 将其发布；</li>
+</ol>
+<p>事后想了一下官网中通过QGroundControl转发摇杆数据，而非通过控制软件直接读取的原因可能如下:</p>
+<ol>
+<li>方便对不同摇杆进行校准操作. 因最终软件需要的控制量数据均需要进行归一化处理, 可通过QGroundControl对不同类型摇杆进行统一校准操作；</li>
+<li>可保持软件的通用性，在SITL, HITL, 或实际飞行时均可通过Joystick控制飞行。</li>
+</ol>
+<h3 id="3">3. 解决方案</h3>
+
+<h4 id="3.1">3.1. 读取摇杆输入</h4>
+
+<p>首选需要弄清如何读取摇杆输入. 以谷歌找到的一个<a href="https://www.kernel.org/doc/Documentation/input/joystick-api.txt">linux官方文档</a>及<a href="https://github.com/drewnoakes/joystick">代码工程</a>为参考，写了如下一个简单测试程序读取摇杆输入，测试环境为Ubuntu 16.04LTS.</p>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sys/fcntl.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;time.h&gt;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="cp">#define JS_EVENT_BUTTON 0x01 </span><span class="c1">// button pressed/released</span>
+<span class="cp">#define JS_EVENT_AXIS   0x02 </span><span class="c1">// joystick moved</span>
+<span class="cp">#define JS_EVENT_INIT   0x80 </span><span class="c1">// initial state of device</span>
+
+<span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span>  <span class="n">time</span><span class="p">;</span>     <span class="cm">/* event timestamp in milliseconds */</span>
+    <span class="kt">short</span>         <span class="n">value</span><span class="p">;</span>    <span class="cm">/* value: for buttons: 1/0 = down/up; axes: -32767~32767*/</span>
+    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">type</span><span class="p">;</span>     <span class="cm">/* event type */</span>
+    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">number</span><span class="p">;</span>   <span class="cm">/* axis/button number */</span>
+<span class="p">}</span><span class="n">JS_EVENT</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">//open the joystick device, the name might be different</span>
+    <span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="s">&quot;/dev/input/js0&quot;</span><span class="p">,</span> <span class="n">O_RDONLY</span><span class="p">);</span> 
+
+    <span class="k">if</span><span class="p">(</span><span class="n">fd</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;can not open joystick!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">struct</span> <span class="n">stat</span> <span class="n">sbuf</span><span class="p">;</span>
+
+    <span class="n">stat</span><span class="p">(</span><span class="s">&quot;/dev/input/js0&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sbuf</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;/etc/hosts file size = %ld</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">sbuf</span><span class="p">.</span><span class="n">st_rdev</span><span class="p">);</span>
+
+    <span class="n">JS_EVENT</span> <span class="n">event</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+
+    <span class="kt">int</span> <span class="n">bytes</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Restrict rate</span>
+        <span class="n">usleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+
+        <span class="c1">// Attempt to sample an event from the joystick</span>
+        <span class="n">bytes</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">JS_EVENT</span><span class="p">));</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">bytes</span> <span class="o">==</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">JS_EVENT</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="n">type</span> <span class="o">&amp;</span> <span class="n">JS_EVENT_BUTTON</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Button %u  is %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">event</span><span class="p">.</span><span class="n">number</span><span class="p">,</span> <span class="n">event</span><span class="p">.</span><span class="n">value</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="s">&quot;up&quot;</span> <span class="o">:</span> <span class="s">&quot;down&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="n">type</span> <span class="o">&amp;</span> <span class="n">JS_EVENT_AXIS</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Axis %u is at position %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">event</span><span class="p">.</span><span class="n">number</span><span class="p">,</span> <span class="n">event</span><span class="p">.</span><span class="n">value</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>使用如下命令编译</p>
+<div class="highlight"><pre><span></span>g++ -g -o readJoy main.cpp
+</pre></div>
+
+
+<p>通过USB连接Saitek Cyborg evo摇杆, 执行程序,得到如下结果:
+<center><img src="/images/px4_joystick/readJoyStick.png"/></center>  </p>
+<p>代码中通过JS_EVENT结构体读取数据，该数据结构中的type表示了摇杆事件类型(轴移动或按键)， 而number和value则分别表示了哪一个轴/按键的事件值。
+拟通过摇杆的各轴作为roll, pitch, yaw, throttle控制，以按键控制模式切换。为了进行下一步工作，须测试得出各轴的极限位置下软件采到的事件值: </p>
+<table>
+<thead>
+<tr>
+<th>Axis</th>
+<th>Meaning</th>
+<th>Value</th>
+<th>Direction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>axis0</td>
+<td>Roll</td>
+<td>-32767~32767</td>
+<td>left~right</td>
+</tr>
+<tr>
+<td>axis1</td>
+<td>Pitch</td>
+<td>32767~-32767</td>
+<td>backward~forward</td>
+</tr>
+<tr>
+<td>axis2</td>
+<td>Throttle</td>
+<td>32767~-32767</td>
+<td>min~max</td>
+</tr>
+<tr>
+<td>axis3</td>
+<td>Yaw</td>
+<td>-32767~32767</td>
+<td>left~right</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3.2">3.2. 修改Pixhawk源码</h4>
+
+<p>读取解析到摇杆的动作事件数据仅是第一步，为将其集成至Pixhawk中的软件模块，还需注意以下问题:</p>
+<ol>
+<li>上述示例代码中的read()函数为阻塞调用，若直接将其放入某个线程中，没有事件发生时，会导致该线程阻塞而无法执行其他语句，须使用linux提供的poll()接口，仅当查询到有事件发生才调用read()读设备文件上的消息;</li>
+<li>须按照Pixhawk的消息订阅/发布(publish/subscribe)机制将摇杆消息打包成软件可识别的消息，在此我们将其打包为<strong>manual_control_setpoint</strong>消息。因为事实上软件中sensors模块中rc_update.cpp将原始的遥控器消息也解析为<strong>manual_control_setpoint</strong>消息，并将其发布。位置控制模块订阅该消息，获取其中的各轴控制量信息。特别需要注意的是Commander模块也订阅该消息，在Commander.cpp中的set_main_state_rc()函数中，根据该消息中的模式设置变量设置飞机的模式。需要根据该函数逆推出发生各模式按键事件后，应该给manual_control_setpoint消息中所需填充的正确值，以期得到目标模式。</li>
+<li>按照上述思路更改代码后，发现按压摇杆上对应按键后，有时无法切换模式的问题。排查发现发布消息的频率过快(6ms)，很可能导致消息队列满，使Commander模块无法接收到新消息，从而无法切换模式的问题。将发布消息的周期改为50ms, 该问题再无复现。</li>
+</ol>
+<p>最终通过摇杆上的按键0,1,2分别控制手动、增稳、自动三种模式，以其四个轴(axis)控制滚转、俯仰、偏航及油门。在PX4/Firmware的v1.6.5稳定版代码基础上，对<a href="https://github.com/oneWayOut/Firmware/blob/cai_readJS/src/modules/simulator/simulator_mavlink.cpp">simulator_mavlink.cpp</a>文件更改，插入部分代码，均在<strong>#ifdef ENABLE_JOYSTICK ... #endif</strong> 预处理块内，详见https://github.com/oneWayOut/Firmware上的<a href="https://github.com/oneWayOut/Firmware/tree/cai_readJS">cai_readJS</a>分支。</p>
+<p>在代码目录的终端中输入以下命令，可对其进行测试:</p>
+<div class="highlight"><pre><span></span>make posix gazebo_plane
+</pre></div>
+
+
+<p>连接QGroundControl后，即可模拟飞行操作。</p>
+
+        </article>
+
+    </div>
+    <div class="col-md-3 content-right">
+        <div class='anchorific'></div>
+    </div>
+</div>
+                </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p>This blog is proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.</p>
+            <p>The theme of the blog is modified based on <a href="http://github.com/samael500/w3-personal-blog/">W3 Personal Blog</a>.</p>
+            <p>Copyrights &copy; 2015&mdash;2017 NutShellKing Blog All rights reserved.</p>
+            
+<p><a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+<img alt="Creative Commons License"
+    style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a>
+This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+Creative Commons Attribution 4.0 International License</a>.</p>
+        </div>
+    </div>
+
+
+</body>
+</html>
