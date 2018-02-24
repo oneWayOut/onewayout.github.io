@@ -1,5 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>NutShellKing Blog - oneWayOut</title><link href="https://oneWayOut.github.io/" rel="alternate"></link><link href="https://oneWayOut.github.io/feeds/onewayout.atom.xml" rel="self"></link><id>https://oneWayOut.github.io/</id><updated>2017-12-02T00:00:00+08:00</updated><entry><title>Pixhawk连接摇杆进行仿真</title><link href="https://oneWayOut.github.io/articles/xue-xi-zong-jie/pixhawk_joystick/" rel="alternate"></link><published>2017-12-02T00:00:00+08:00</published><updated>2017-12-02T00:00:00+08:00</updated><author><name>oneWayOut</name></author><id>tag:onewayout.github.io,2017-12-02:/articles/xue-xi-zong-jie/pixhawk_joystick/</id><summary type="html">&lt;p&gt;对Pixhawk代码中的仿真接口模块进行了更改，使其能够直接通过USB接口读取控制摇杆的输入，实现对其飞控代码的仿真飞行控制&lt;/p&gt;</summary><content type="html">&lt;h3 id="1"&gt;1. 问题&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>NutShellKing Blog - oneWayOut</title><link href="https://oneWayOut.github.io/" rel="alternate"></link><link href="https://oneWayOut.github.io/feeds/onewayout.atom.xml" rel="self"></link><id>https://oneWayOut.github.io/</id><updated>2018-02-24T00:00:00+08:00</updated><entry><title>2018年计划</title><link href="https://oneWayOut.github.io/articles/xue-xi-zong-jie/2018_Resolution/" rel="alternate"></link><published>2018-02-24T00:00:00+08:00</published><updated>2018-02-24T00:00:00+08:00</updated><author><name>oneWayOut</name></author><id>tag:onewayout.github.io,2018-02-24:/articles/xue-xi-zong-jie/2018_Resolution/</id><summary type="html">&lt;p&gt;2018计划，新的一年会更好&lt;/p&gt;</summary><content type="html">&lt;p&gt;若非有某种强制手段或高度的使命责任感，自己怕是懒得动弹一下。然而年过而立，诸事未立，新的事物层出不穷，应接不暇，注意力时还常耗用于电子产品带来的各种垃圾信息，时常袭来一阵焦虑，若非给自己一些挑战，怕是会总这样浑浑噩噩下去，诸事立不起来。农历新年的假期里给自己拟了一个新年计划，写出来是为了更加正式、有约束力，希望新的一年里不虚掷光阴，有更丰富的知识储备、更积极的生活心态、更健康的体魄。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;读完以下书籍:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Data Structures &amp;amp; Algorithms in Python&lt;/li&gt;
+&lt;li&gt;Fluent Python&lt;/li&gt;
+&lt;li&gt;C++ Primer&lt;/li&gt;
+&lt;li&gt;C++ Primer Plus&lt;/li&gt;
+&lt;li&gt;Effective C++&lt;/li&gt;
+&lt;li&gt;Small Unmanned Aircraft&lt;/li&gt;
+&lt;li&gt;图解机器学习&lt;/li&gt;
+&lt;li&gt;软件架构实践(第3版 影印版)&lt;/li&gt;
+&lt;li&gt;编程珠玑&lt;/li&gt;
+&lt;li&gt;设计心理学&lt;/li&gt;
+&lt;li&gt;艺术的故事&lt;/li&gt;
+&lt;li&gt;高等数学&lt;/li&gt;
+&lt;li&gt;数学与科技&lt;/li&gt;
+&lt;li&gt;为什么去火星&lt;/li&gt;
+&lt;li&gt;TED TALKS The official TED Guide to Public Speaking&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;完成去年打算做但几近烂尾的项目&lt;a href="https://github.com/oneWayOut/PX4UAV_Sim"&gt;PX4UAV_Sim&lt;/a&gt;：一个可为Pixhawk软件进行飞行仿真的六自由度UAV动力学模型代码库;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;学习和利用这几个代码库：PX4/Firmware, STL, JSBSim, GoogleTest;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;个人网站文章至少每月一更，日记有好几个月没写了，也得继续坚持，还可兼练字之用；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;每周锻炼3次以上：游泳、跑步、太极等不限；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;听一些巴赫，贝多芬之外的古典乐。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The clock is ticking, 跳出自己的心理舒适圈，努力持之以恒地开始实施吧！&lt;/p&gt;</content><category term="Resolution 计划"></category></entry><entry><title>Pixhawk连接摇杆进行仿真</title><link href="https://oneWayOut.github.io/articles/xue-xi-zong-jie/pixhawk_joystick/" rel="alternate"></link><published>2017-12-02T00:00:00+08:00</published><updated>2017-12-02T00:00:00+08:00</updated><author><name>oneWayOut</name></author><id>tag:onewayout.github.io,2017-12-02:/articles/xue-xi-zong-jie/pixhawk_joystick/</id><summary type="html">&lt;p&gt;对Pixhawk代码中的仿真接口模块进行了更改，使其能够直接通过USB接口读取控制摇杆的输入，实现对其飞控代码的仿真飞行控制&lt;/p&gt;</summary><content type="html">&lt;h3 id="1"&gt;1. 问题&lt;/h3&gt;
 
 &lt;p&gt;最近有这样一个需求: 对Pixhawk软件中的控制算法进行更改后，需要对其控制算法、各模式间的切换等进行全面地仿真测试，避免实际飞行时炸机的损失。
 按照&lt;a href="https://dev.px4.io/en/simulation/"&gt;官方文档中的方法&lt;/a&gt;， 可利用Gazebo, QGroundControl等配合完成大部分的大部分的测试，还可连接控制摇杆/手柄(Joystick/Gamepad), 将其作为手动输入。同事付老师帮忙给了一个Made in China的Saitek Cyborg evo摇杆，按照官网方法进行配置，发现在仿真中无法通过其设置手动、增稳、自动等飞行模式，一查，原来仅有&lt;a href="https://docs.qgroundcontrol.com/en/SetupView/Joystick.html#sony-playstation-34-controllers"&gt;高端的Sony的摇杆才能支持模式切换&lt;/a&gt;。 只好想办法省钱，通过更改软件解决无法通过摇杆切换模式的问题。&lt;/p&gt;
